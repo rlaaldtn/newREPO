@@ -13,5 +13,6 @@ public class greetingController {
         model.addAttribute("name", name);
         return "greeting";
     }
+    //여긴 컨트롤러부
 
 }
