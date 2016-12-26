@@ -13,6 +13,6 @@ public class greetingController {
         model.addAttribute("name", name);
         return "greeting";
     }
-    //여긴 컨트롤러부
+    //여긴 컨트롤러부분이다 하하하하하하하하하하
 
 }
