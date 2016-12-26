@@ -14,5 +14,6 @@ public class greetingController {
         return "greeting";
     }
     //여긴 컨트롤러부분이다 하하하하하하하하하하
+    //ㅁㅈ더래ㅓㅁㄷㅈ래머ㅑㅈ
 
 }
