@@ -16,9 +16,5 @@ public class greetingController {
     }
     //여긴 컨트롤러부분이다 하하하하하하하하하하
     //ㅁㅈ더래ㅓㅁㄷㅈ래머ㅑㅈ
-    @RequestMapping("/textarea")
-    public String tutorialTextarea(Model model){
-    	model.addAttribute("Notes","please contact me \n this example by \n http://stackoverflow.com/questions/27839870/access-textarea-with-spring-thymeleaf \n");
-    	return "textarea";
-    }
+
 }
