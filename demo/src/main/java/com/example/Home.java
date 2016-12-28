@@ -10,5 +10,3 @@ public class Home {
         SpringApplication.run(Home.class, args);
     }
 }
-//ddddddddddd
-//깃 수정
