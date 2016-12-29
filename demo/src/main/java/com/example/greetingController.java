@@ -1,11 +1,12 @@
 package com.example;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class greetingController {
@@ -23,11 +24,13 @@ public class greetingController {
     	return "chatting";
     }
     
-    @RequestMapping(value="/chatting", method={RequestMethod.POST})
-    public String onChatting(@RequestParam(value="message", required=false) String message, Model model) {
-    	model.addAttribute("msg", message);
-    	System.out.println(message);
-    	return "chatting";
+    @ResponseBody
+    @RequestMapping(value="/chatting", method= RequestMethod.POST)
+    public String onChatting(@RequestBody final Message message, Model model) {
+    	model.addAttribute("msg", message.getContent());
+    	
+    	System.out.println(message.getContent());
+    	return null;
     }
     
 }

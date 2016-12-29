@@ -1,14 +1,36 @@
 <html>
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script>
+    function transfer() {
+
+      var message = {};
+      message.content = $('#message').val();
+
+      console.log(JSON.stringify(message));
+
+      $.ajax({
+        contentType: "application/json",
+        type: "POST",
+        url: "chatting",
+        dataType: 'json',
+        processData: false,
+        data: JSON.stringify(message)
+      });
+
+    }
+
+  </script>
   <title>채팅</title>
 </head>
 <body>
   <div id="history">
     <p th:text="${msg}" />
   </div>
-  <form method="POST" action="chatting">
+  <!-- <form id="msgs" method="POST" action="chatting"> -->
+  <form id="msgs">
     <input type="text" id="message" name="message"></input>
-    <input type="submit" id="send" value="SUBMIT"></input>
+    <button type="button" onclick="transfer()">SEND</button>
   </form>
 </body>
 </html>
