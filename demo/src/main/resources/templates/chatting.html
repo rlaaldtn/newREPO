@@ -5,7 +5,7 @@
     function transfer() {
 
       var message = {};
-      message.content = $('#message').val();
+      message.content = $('#input').val();
 
       console.log(JSON.stringify(message));
 
@@ -17,7 +17,8 @@
         processData: false,
         data: JSON.stringify(message),
         success: function(data) {
-          $('#history').html(data);
+          $('#history').append($('<div />').text(data.content));
+          $('#input').val('');
         }
       });
 
@@ -28,11 +29,9 @@
 </head>
 <body>
   <div id="history">
-    <p th:text="${msg}" />
   </div>
-  <!-- <form id="msgs" method="POST" action="chatting"> -->
   <form id="msgs">
-    <input type="text" id="message" name="message"></input>
+    <input type="text" id="input" name="message"></input>
     <button type="button" onclick="transfer()">SEND</button>
   </form>
 </body>

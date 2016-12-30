@@ -1,7 +1,5 @@
 package com.example;
 
-import java.util.Date;
-
 public class Message {
 	
 	private String content;

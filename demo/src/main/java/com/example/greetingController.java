@@ -26,11 +26,10 @@ public class greetingController {
     
     @ResponseBody
     @RequestMapping(value="/chatting", method= RequestMethod.POST)
-    public String onChatting(@RequestBody final Message message, Model model) {
-    	model.addAttribute("msg", message.getContent());
+    public Message onChatting(@RequestBody final Message message) {
     	
     	System.out.println(message.getContent());
-    	return null;
+    	return message;
     }
     
 }
