@@ -28,9 +28,8 @@ public class greetingController {
     @RequestMapping(value="/chatting", method= RequestMethod.POST)
     public String onChatting(@RequestBody final Message message, Model model) {
     	model.addAttribute("msg", message.getContent());
-    	
     	System.out.println(message.getContent());
-    	return null;
+    	return "jsonView";
     }
     
 }
