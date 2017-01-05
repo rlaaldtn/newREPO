@@ -50,6 +50,14 @@
 	  <groupId>com.fasterxml.jackson.core</groupId>
 	  <artifactId>jackson-databind</artifactId>
 	</dependency>
+    <dependency>
+    	<artifactId></artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.springframework.data</groupId>
+    	<artifactId>spring-data-mongodb</artifactId>
+    	<version>1.3.1.RELEASE</version>
+    </dependency>
 	</dependencies>
 
 	<build>

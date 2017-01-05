@@ -1,7 +1,5 @@
 package com.example;
 
-import java.util.Date;
-
 public class Message {
 	
 	private String content;
@@ -22,7 +20,7 @@ public class Message {
 //		this.date = date;
 //	}
 //
-//	public boolean isFromMe() {
+//	public boolean isFromMe() { //ID 부분
 //		return fromMe;
 //	}
 //
