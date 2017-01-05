@@ -2,6 +2,11 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
+
+    function appendMessage(message) {
+      $('#history').append($('<div />').text(message.content))
+    }
+
     function transfer() {
 
       var message = {};
@@ -17,7 +22,12 @@
         processData: false,
         data: JSON.stringify(message),
         success: function(data) {
+<<<<<<< HEAD
           $('#history').append($('<div />').text(data.content));
+=======
+          $('#history').empty();
+          data.forEach(appendMessage);
+>>>>>>> 999aa754e2438a5c04fb81fdba6582effdccc0a6
           $('#input').val('');
         }
       });
