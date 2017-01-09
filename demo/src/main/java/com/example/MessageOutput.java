@@ -3,6 +3,7 @@ package com.example;
 public class MessageOutput {
 
     private String messageOutput;
+    private String messageFrom;
 
     public MessageOutput() {
     }
@@ -11,8 +12,12 @@ public class MessageOutput {
         this.messageOutput = messageOutput;
     }
 
-    public String getContent() {
+    public String getMessageOutput() {
         return messageOutput;
+    }
+    
+    public String getMessageFrom() {
+    	return messageFrom;
     }
 
 }

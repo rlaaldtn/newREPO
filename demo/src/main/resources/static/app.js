@@ -1,4 +1,5 @@
 var stompClient = null;
+var guid = "";
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -18,8 +19,8 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+        stompClient.subscribe('/chatting/001', function (message) {
+            showGreeting(JSON.parse(message.body).content);
         });
     });
 }
@@ -32,8 +33,8 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'messageInput': $("#input").val()}));
+function sendMessage() {
+    stompClient.send("/app/transfer", {}, JSON.stringify({'messageInput': $("#input").val()}));
 }
 
 function showGreeting(message) {
@@ -46,7 +47,7 @@ $(function () {
     });
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
+    $( "#send" ).click(function() { sendMessage(); });
 });
 
 $(document).ready(function() {

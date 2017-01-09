@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,10 +33,15 @@ public class greetingController {
         return "greeting";
     }
     
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @MessageMapping("/transfer")
+    @SendTo("/chatting/001")
     public MessageOutput greeting(MessageInput messageInput) throws Exception {
         return new MessageOutput(messageInput.getMessageInput());
+    }
+    
+    @RequestMapping(value="/guid", method=RequestMethod.POST)
+    public String getGuid(@RequestBody final String guid) {
+    	return repository.findByCustomerId(guid).getId();
     }
     
     @RequestMapping(value="/", method={RequestMethod.GET})
