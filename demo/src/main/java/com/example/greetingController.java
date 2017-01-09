@@ -34,12 +34,11 @@ public class greetingController {
     
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
-    public Greeting greeting(HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return new Greeting("Hello, " + message.getName() + "!");
+    public MessageOutput greeting(MessageInput messageInput) throws Exception {
+        return new MessageOutput(messageInput.getMessageInput());
     }
     
-    @RequestMapping(value="/chatting", method={RequestMethod.GET})
+    @RequestMapping(value="/", method={RequestMethod.GET})
     public String startChatting() {
     	UUID uuid = UUID.randomUUID();
     	String guid = uuid.toString();
@@ -76,6 +75,6 @@ public class greetingController {
     		System.out.println(customer.toString());
     	}
     	
-    	return "chatting";
+    	return "index";
     }    
 }
