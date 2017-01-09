@@ -6,13 +6,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Home implements CommandLineRunner{
+public class Application implements CommandLineRunner{
 
 	@Autowired
 	CustomerRepository repository;
 	
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(Home.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 	@Override
