@@ -9,7 +9,7 @@ public class Customer {
 	@Id
 	public String customerId;
 	
-//	public String matchingId;
+	public String matchingId;
 //	public Date accessDate;
 //	public boolean isChatting;
 	
@@ -28,12 +28,12 @@ public class Customer {
 	public void setId(String id) {
 		this.customerId = id;
 	}
-//	public String getMatchingId() {
-//		return matchingId;
-//	}
-//	public void setMatchingId(String matchingId) {
-//		this.matchingId = matchingId;
-//	}
+	public String getMatchingId() {
+		return matchingId;
+	}
+	public void setMatchingId(String matchingId) {
+		this.matchingId = matchingId;
+	}
 //	public Date getAccessDate() {
 //		return accessDate;
 //	}
