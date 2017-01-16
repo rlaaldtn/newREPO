@@ -1,5 +1,6 @@
 var stompClient = null;
 var guid = "";
+var sendingMsg = {};
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -35,7 +36,10 @@ function disconnect() {
 }
 
 function sendMessage() {
-    stompClient.send("/app/transfer", {}, $("#input").val());
+    sendingMsg.content = $("#input").val();
+    sendingMsg.channel = guid;
+    console.log(sendingMsg);
+    stompClient.send("/app/transfer", {}, JSON.stringify(sendingMsg));
 }
 
 function showGreeting(message) {
@@ -61,6 +65,7 @@ $(function () {
 
 $(document).ready(function() {
   guid = generateUUID();
+  console.log(guid);
   connect();
 });
 

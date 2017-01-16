@@ -2,10 +2,14 @@ package com.example;
 
 public class Message {
 
-	private String content;
+	public String content;
+	public String channel;
 	
-	public Message(String message) {
+	public Message() {}
+	
+	public Message(String message, String channel) {
 		this.content = message;
+		this.channel = channel;
 	}
 	
 	public String getMessage() {
@@ -16,4 +20,11 @@ public class Message {
 		this.content = message;
 	}
 	
+	public String getChannel() {
+		return this.channel;
+	}
+	
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
 }
