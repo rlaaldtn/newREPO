@@ -20,7 +20,8 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/chatting/001', function (message) {
-            showGreeting(JSON.parse(message.body).content);
+            console.log(message.body);
+            showGreeting(message.body);
         });
     });
 }
@@ -34,23 +35,32 @@ function disconnect() {
 }
 
 function sendMessage() {
-    stompClient.send("/app/transfer", {}, JSON.stringify({'messageInput': $("#input").val()}));
+    stompClient.send("/app/transfer", {}, $("#input").val());
 }
 
 function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
 }
 
-$(function () {
-    $("form").on('submit', function (e) {
-        e.preventDefault();
+function generateUUID() {
+    var d = new Date().getTime();
+    if(window.performance && typeof window.performance.now === "function"){
+        d += performance.now(); //use high-precision timer if available
+    }
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
     });
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
+    return uuid;
+}
+
+$(function () {
     $( "#send" ).click(function() { sendMessage(); });
 });
 
 $(document).ready(function() {
+  guid = generateUUID();
   connect();
 });
 

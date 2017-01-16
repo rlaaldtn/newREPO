@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class greetingController {
@@ -35,8 +36,9 @@ public class greetingController {
     
     @MessageMapping("/transfer")
     @SendTo("/chatting/001")
-    public MessageOutput greeting(MessageInput messageInput) throws Exception {
-        return new MessageOutput(messageInput.getMessageInput());
+    public String greeting(String message) throws Exception {
+    	logger.info(message);
+        return message;
     }
     
     @RequestMapping(value="/guid", method=RequestMethod.POST)
@@ -82,5 +84,5 @@ public class greetingController {
     	}
     	
     	return "index";
-    }    
+    } 
 }
