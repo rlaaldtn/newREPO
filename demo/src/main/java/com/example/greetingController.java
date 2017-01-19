@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class greetingController {
@@ -60,7 +59,6 @@ public class greetingController {
     	System.out.println(queue.size());
     	
     	if(queue.size() > 1) {
-    		
     		String tmp1 = queue.poll();
     		String tmp2 = queue.poll();
     		
@@ -71,14 +69,11 @@ public class greetingController {
     		Customer waitingCustomer2 = repository.findByCustomerId(tmp2);
     		waitingCustomer2.setMatchingId(tmp1);
     		repository.save(waitingCustomer2);
-    		
     	}
     	
     	else {
     		//pending
-    		
     	}
-    	
     	
     	for(Customer customer : repository.findAll()) {
     		System.out.println(customer.toString());
