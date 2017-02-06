@@ -7,10 +7,10 @@ import org.springframework.data.annotation.Id;
 public class Customer {
 	
 	@Id
-	public String customerId;
+	private String customerId;
 	
-	public String matchingId;
-	public Date accessDate;
+	private String matchingId;
+	private Date accessDate;
 	
 	public Customer() {}
 	

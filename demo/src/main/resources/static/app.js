@@ -1,6 +1,7 @@
 var stompClient = null;
 var guid = "";
 var sendingMsg = {};
+var matchingid = "empty";
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -15,6 +16,13 @@ function setConnected(connected) {
 }
 
 function connect() {
+    // var intervalFunction = setInterval(function() {
+    //   console.log("searching...");
+    //   $.post('/getmatching', guid, function(data){matchingid = data});
+    //   console.log(matchingid);
+    //   if(matchingid != 'empty') clearInterval(intervalFunction);
+    // }, 2000);
+    $.post('/getmatching', guid, function(data){matchingid = data});
     var socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
@@ -45,7 +53,7 @@ function sendMessage() {
 function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
     //스크롤 자동으로 내리기 함수 ( 인터넷에서 복붙)
-    document.body.scrollTop = document.body.scrollHeight;
+                $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
 
 }
 
