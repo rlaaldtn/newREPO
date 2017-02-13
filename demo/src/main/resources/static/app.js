@@ -16,13 +16,14 @@ function setConnected(connected) {
 }
 
 function connect() {
-    // var intervalFunction = setInterval(function() {
-    //   console.log("searching...");
-    //   $.post('/getmatching', guid, function(data){matchingid = data});
-    //   console.log(matchingid);
-    //   if(matchingid != 'empty') clearInterval(intervalFunction);
-    // }, 2000);
-    $.post('/getmatching', guid, function(data){matchingid = data});
+    var intervalFunction = setInterval(function() {
+      console.log("searching...");
+      $.post('/getmatching', guid, function(data){matchingid = data});
+      console.log("GUID:" + guid);
+      console.log("MATCH: " + matchingid);
+      if(matchingid != 'empty') clearInterval(intervalFunction);
+    }, 2000);
+    // $.post('/getmatching', guid, function(data){matchingid = data});
     var socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
