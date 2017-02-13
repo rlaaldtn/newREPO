@@ -3,13 +3,15 @@ package com.example;
 public class Message {
 
 	public String content;
-	public String channel;
+	public String sender;
+	public String receiver;
 	
 	public Message() {}
 	
-	public Message(String message, String channel) {
+	public Message(String message, String sender, String receiver) {
 		this.content = message;
-		this.channel = channel;
+		this.sender = sender;
+		this.receiver = receiver;
 	}
 	
 	public String getMessage() {
@@ -20,11 +22,20 @@ public class Message {
 		this.content = message;
 	}
 	
-	public String getChannel() {
-		return this.channel;
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+
+	public String getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
 	}
 	
-	public void setChannel(String channel) {
-		this.channel = channel;
-	}
 }

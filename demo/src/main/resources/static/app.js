@@ -2,7 +2,6 @@ var stompClient = null;
 var guid = "";
 var sendingMsg = {};
 var matchingid = "empty";
-var matched = false;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -45,13 +44,21 @@ function disconnect() {
 
 function sendMessage() {
     sendingMsg.content = $("#input").val();
+    sendingMsg.sender = guid;
+    sendingMsg.receiver = matchingid;
     console.log(sendingMsg);
     stompClient.send("/app/transfer", {}, JSON.stringify(sendingMsg));
 }
 
 function showGreeting(message) {
-    $("#conversation").append("<tr><td>" + message.content + "</td></tr>");
-    $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+      console.log(message);
+      jsonmessage = JSON.parse(message);
+      console.log(jsonmessage.sender);
+      console.log(matchingid.slice(0,-1));
+      if(jsonmessage.sender == matchingid.slice(0,-1)) {
+        $("#conversation").append("<tr><td>" + jsonmessage.content + "</td></tr>");
+        $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+      }
 }
 
 function generateUUID() {

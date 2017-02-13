@@ -35,9 +35,9 @@ public class greetingController {
     
     @MessageMapping("/transfer")
     @SendTo("/chatting/001")
-    public String greeting(@RequestBody Message message) throws Exception {
+    public Message greeting(@RequestBody Message message) throws Exception {
     	logger.info(message.getMessage());
-        return message.getMessage();
+        return message;
     }
     
     @RequestMapping(value="/guid", method=RequestMethod.POST)
