@@ -34,10 +34,9 @@ public class greetingController {
     }
     
     @MessageMapping("/transfer")
-    @SendTo("/chatting/001/")
+    @SendTo("/chatting/001")
     public String greeting(@RequestBody Message message) throws Exception {
     	logger.info(message.getMessage());
-    	logger.info(message.getChannel());
         return message.getMessage();
     }
     

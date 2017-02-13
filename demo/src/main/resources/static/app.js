@@ -2,6 +2,7 @@ var stompClient = null;
 var guid = "";
 var sendingMsg = {};
 var matchingid = "empty";
+var matched = false;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -16,20 +17,18 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var intervalFunction = setInterval(function() {
-      console.log("searching...");
-      $.post('/getmatching', guid, function(data){matchingid = data});
-      console.log("GUID:" + guid);
-      console.log("MATCH: " + matchingid);
-      if(matchingid != 'empty') clearInterval(intervalFunction);
-    }, 2000);
-    // $.post('/getmatching', guid, function(data){matchingid = data});
-    var socket = new SockJS('/gs-guide-websocket');
+    if(matchingid == "empty") {
+      var intervalFunction = setInterval(function() {
+        $.post("/getmatching", guid, function(data){matchingid = data});
+        if(matchingid != "empty") clearInterval(intervalFunction);
+      }, 2000);
+    }
+    var socket = new SockJS("/gs-guide-websocket");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/chatting/001', function (message) {
+        console.log("Connected: " + frame);
+        stompClient.subscribe("/chatting/001", function (message) {
             console.log(message.body);
             showGreeting(message.body);
         });
@@ -46,16 +45,13 @@ function disconnect() {
 
 function sendMessage() {
     sendingMsg.content = $("#input").val();
-    sendingMsg.channel = guid;
     console.log(sendingMsg);
     stompClient.send("/app/transfer", {}, JSON.stringify(sendingMsg));
 }
 
 function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
-    //스크롤 자동으로 내리기 함수 ( 인터넷에서 복붙)
-                $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
-
+    $("#conversation").append("<tr><td>" + message.content + "</td></tr>");
+    $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
 }
 
 function generateUUID() {
@@ -84,5 +80,3 @@ $(document).ready(function() {
 $(window).on("beforeunload", function() {
   disconnect();
 });
-
-
