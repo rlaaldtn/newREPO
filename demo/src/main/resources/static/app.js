@@ -53,6 +53,9 @@ function sendMessage() {
 
 function showGreeting(message) {
     $("#greetings").append("<tr><td>" + message + "</td></tr>");
+    //스크롤 자동으로 내리기 함수 ( 인터넷에서 복붙)
+                $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+
 }
 
 function generateUUID() {
@@ -81,3 +84,5 @@ $(document).ready(function() {
 $(window).on("beforeunload", function() {
   disconnect();
 });
+
+
