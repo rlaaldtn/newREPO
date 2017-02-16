@@ -1,6 +1,8 @@
 /* container */
 .container {
   display: block;
+  width: 300px;
+  height: auto;
   clear: both;
 }
 /* CSS talk bubble */
@@ -20,7 +22,7 @@
   float: right;
 	width: auto;
 	height: auto;
-	background-color: #ffffff;
+	background-color: #ffeb2f;
 }
 .border{
   border: 2px solid #666;
@@ -252,7 +254,7 @@
   top: 5px;
 	bottom: auto;
 	border: 7px solid;
-	border-color: #ffffff transparent transparent transparent;
+	border-color: #ffeb2f transparent transparent transparent;
 }
 
 /* talk bubble contents */

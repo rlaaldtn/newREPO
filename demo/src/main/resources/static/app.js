@@ -52,6 +52,7 @@ function sendMessage() {
     sendingMsg.receiver = matchingid;
     console.log(sendingMsg);
     stompClient.send("/app/transfer", {}, JSON.stringify(sendingMsg));
+    $("#input").val("");
 }
 
 function showMessage(message) {
@@ -94,12 +95,16 @@ function generateUUID() {
 
 $(function () {
     $( "#send" ).click(function() { sendMessage(); });
+    $( "#input" ).keydown(function(e) {
+      if(e.keyCode == 13) sendMessage();
+    });
 });
 
 $(document).ready(function() {
   guid = generateUUID();
   console.log(guid);
   connect();
+  $( "#input" ).focus();
 });
 
 $(window).on("beforeunload", function() {
