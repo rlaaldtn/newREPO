@@ -2,6 +2,7 @@ var stompClient = null;
 var guid = "";
 var sendingMsg = {};
 var matchingid = "empty";
+var prev_sender = "";
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -19,7 +20,10 @@ function connect() {
     if(matchingid == "empty") {
       var intervalFunction = setInterval(function() {
         $.post("/getmatching", guid, function(data){matchingid = data});
-        if(matchingid != "empty") clearInterval(intervalFunction);
+        if(matchingid != "empty") {
+          clearInterval(intervalFunction);
+          $("#scroll-option").append("<div class='alert alert-success' id='alert_connected'><strong>연결되었습니다.</strong></div>");
+        }
       }, 2000);
     }
     var socket = new SockJS("/gs-guide-websocket");
@@ -29,7 +33,7 @@ function connect() {
         console.log("Connected: " + frame);
         stompClient.subscribe("/chatting/001", function (message) {
             console.log(message.body);
-            showGreeting(message.body);
+            showMessage(message.body);
         });
     });
 }
@@ -50,15 +54,29 @@ function sendMessage() {
     stompClient.send("/app/transfer", {}, JSON.stringify(sendingMsg));
 }
 
-function showGreeting(message) {
-      console.log(message);
+function showMessage(message) {
       jsonmessage = JSON.parse(message);
-      console.log(jsonmessage.sender);
-      console.log(matchingid.slice(0,-1));
-      if(jsonmessage.sender == matchingid.slice(0,-1)) {
-        $("#conversation").append("<tr><td>" + jsonmessage.content + "</td></tr>");
-        $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+      if(jsonmessage.sender == prev_sender) {
+        if(jsonmessage.sender == matchingid.slice(0,-1)) {
+          $("#conversation").append("<div class='container'><div class='talk-bubble-left round'><div class='talktextleft'><p>" + jsonmessage.content + "</p></div></div></div>");
+          $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+        }
+        else if(jsonmessage.sender == guid) {
+          $("#conversation").append("<div class='container'><div class='talk-bubble-right round'><div class='talktextright'><p>" + jsonmessage.content + "</p></div></div></div>");
+          $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+        }
       }
+      else {
+        if(jsonmessage.sender == matchingid.slice(0,-1)) {
+          $("#conversation").append("<div class='container'><div class='talk-bubble-left tri-right left-top round'><div class='talktextleft'><p>" + jsonmessage.content + "</p></div></div></div>");
+          $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+        }
+        else if(jsonmessage.sender == guid) {
+          $("#conversation").append("<div class='container'><div class='talk-bubble-right tri-right right-top round'><div class='talktextright'><p>" + jsonmessage.content + "</p></div></div></div>");
+          $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+        }
+      }
+      prev_sender = jsonmessage.sender;
 }
 
 function generateUUID() {
