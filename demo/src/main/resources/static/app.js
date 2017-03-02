@@ -3,6 +3,21 @@ var guid = "";
 var sendingMsg = {};
 var matchingid = "empty";
 var prev_sender = "";
+var sendDisabled = true;
+
+function bindInput() {
+  $( "#input" ).bind("input propertychange", function() {
+    var text = $( "#input" ).val();
+    if( !text.replace(/\s/g, '').length ) {
+      $( "#send" ).prop("disabled", true);
+      sendDisabled = true;
+    }
+    else {
+      $( "#send" ).prop("disabled", false);
+      sendDisabled = false;
+    }
+  });
+}
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -17,25 +32,39 @@ function setConnected(connected) {
 }
 
 function connect() {
+    $("#scroll-option").append("<div class='alert alert-warning'><strong>대화 상대 찾는 중...</strong></div>");
     if(matchingid == "empty") {
       var intervalFunction = setInterval(function() {
         $.post("/getmatching", guid, function(data){matchingid = data});
         if(matchingid != "empty") {
           clearInterval(intervalFunction);
-          $("#scroll-option").append("<div class='alert alert-success' id='alert_connected'><strong>연결되었습니다.</strong></div>");
+          $(".alert-warning").remove();
+          $("#scroll-option").append("<div class='alert alert-success'><strong>연결되었습니다.</strong></div>");
+          bindInput();
+          window.setTimeout(function() {
+            $(".alert-success").fadeTo(500, 0).slideUp(500, function() {
+                $(this).remove();
+            });
+          }, 5000);
         }
       }, 2000);
     }
     var socket = new SockJS("/gs-guide-websocket");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
+        console.log(frame);
         setConnected(true);
-        console.log("Connected: " + frame);
         stompClient.subscribe("/chatting/001", function (message) {
-            console.log(message.body);
             showMessage(message.body);
         });
     });
+}
+
+function resetInput() {
+  $( "#input" ).val("");
+  $( "#input" ).focus();
+  $( "#send" ).prop("disabled", true);
+  sendDisabled = true;
 }
 
 function disconnect() {
@@ -43,39 +72,47 @@ function disconnect() {
         stompClient.disconnect();
     }
     setConnected(false);
-    console.log("Disconnected");
 }
 
-function sendMessage() {
-    sendingMsg.content = $("#input").val();
+function sendMessage(msg) {
+    sendingMsg.content = msg;
     sendingMsg.sender = guid;
     sendingMsg.receiver = matchingid;
-    console.log(sendingMsg);
     stompClient.send("/app/transfer", {}, JSON.stringify(sendingMsg));
-    $("#input").val("");
+    resetInput();
 }
 
 function showMessage(message) {
       jsonmessage = JSON.parse(message);
-      if(jsonmessage.sender == prev_sender) {
-        if(jsonmessage.sender == matchingid.slice(0,-1)) {
-          $("#conversation").append("<div class='container'><div class='talk-bubble-left round'><div class='talktextleft'><p>" + jsonmessage.content + "</p></div></div></div>");
-          $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+      jsonmessage.content = jsonmessage.content.replace(/\n/g, '<br>');
+      console.log("SENDING MSG CONTENT ::: "+jsonmessage.content);
+      if(jsonmessage.content != " ") {
+        if(jsonmessage.sender == prev_sender) {
+          if(jsonmessage.sender == matchingid.slice(0,-1)) {
+            $("#conversation").append("<div class='container'><div class='talk-bubble-left round'><div class='talktext'>" + jsonmessage.content + "</div></div></div>");
+            $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+          }
+          else if(jsonmessage.sender == guid) {
+            $("#conversation").append("<div class='container'><div class='talk-bubble-right round'><div class='talktext'>" + jsonmessage.content + "</div></div></div>");
+            $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+          }
         }
-        else if(jsonmessage.sender == guid) {
-          $("#conversation").append("<div class='container'><div class='talk-bubble-right round'><div class='talktextright'><p>" + jsonmessage.content + "</p></div></div></div>");
-          $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+        else {
+          if(jsonmessage.sender == matchingid.slice(0,-1)) {
+            $("#conversation").append("<div class='container'><div class='talk-bubble-left tri-right left-top round'><div class='talktext'>" + jsonmessage.content + "</div></div></div>");
+            $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+          }
+          else if(jsonmessage.sender == guid) {
+            $("#conversation").append("<div class='container'><div class='talk-bubble-right tri-right right-top round'><div class='talktext'>" + jsonmessage.content + "</div></div></div>");
+            $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
+          }
         }
       }
       else {
-        if(jsonmessage.sender == matchingid.slice(0,-1)) {
-          $("#conversation").append("<div class='container'><div class='talk-bubble-left tri-right left-top round'><div class='talktextleft'><p>" + jsonmessage.content + "</p></div></div></div>");
-          $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
-        }
-        else if(jsonmessage.sender == guid) {
-          $("#conversation").append("<div class='container'><div class='talk-bubble-right tri-right right-top round'><div class='talktextright'><p>" + jsonmessage.content + "</p></div></div></div>");
-          $('#scroll-option').scrollTop($('#scroll-option')[0].scrollHeight);
-        }
+        $("#scroll-option").append("<div class='alert alert-info'><strong>상대가 떠났습니다.</strong></div>");
+        $("#input").unbind();
+        $("#input").prop("disabled", true);
+        sendDisabled = true;
       }
       prev_sender = jsonmessage.sender;
 }
@@ -94,19 +131,24 @@ function generateUUID() {
 }
 
 $(function () {
-    $( "#send" ).click(function() { sendMessage(); });
+    $( "#send" ).click(function() { sendMessage( $( "#input" ).val() ); });
     $( "#input" ).keydown(function(e) {
-      if(e.keyCode == 13) sendMessage();
+      if(e.keyCode == 13 && !e.shiftKey) {
+        e.preventDefault();
+        if(!sendDisabled) sendMessage( $( "#input" ).val() );
+      }
     });
+
 });
 
 $(document).ready(function() {
   guid = generateUUID();
-  console.log(guid);
   connect();
   $( "#input" ).focus();
+  $( "#send" ).prop("disabled", true);
 });
 
 $(window).on("beforeunload", function() {
+  sendMessage(" ");
   disconnect();
 });

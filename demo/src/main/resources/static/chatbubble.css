@@ -11,8 +11,8 @@
   display: inline-block;
   position: relative;
   float: left;
-	width: auto;
 	height: auto;
+  width: auto;
 	background-color: #ffffff;
 }
 .talk-bubble-right {
@@ -20,17 +20,17 @@
   display: inline-block;
   position: relative;
   float: right;
-	width: auto;
 	height: auto;
-	background-color: #ffeb2f;
+  max-width: 300px;
+	background-color: #ffe319;
 }
 .border{
   border: 2px solid #666;
 }
 .round{
-  border-radius: 6px;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
+  border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
 
 }
 
@@ -242,7 +242,7 @@
   top: -8px;
 	bottom: auto;
 	border: 32px solid;
-	border-color: #666 transparent transparent transparent;
+	border-color: #ffe319 transparent transparent transparent;
 }
 .tri-right.right-top:after{
 	content: ' ';
@@ -254,27 +254,16 @@
   top: 5px;
 	bottom: auto;
 	border: 7px solid;
-	border-color: #ffeb2f transparent transparent transparent;
+	border-color: #ffe319 transparent transparent transparent;
 }
 
 /* talk bubble contents */
-.talktextleft{
-  padding: 6px;
+.talktext{
+  padding: 5px;
 	text-align: left;
+  max-width: 180px;
+  height: auto;
   line-height: 14px;
-}
-.talktextright{
-  padding: 6px;
-	text-align: left;
-  line-height: 14px;
-}
-.talktextleft p{
-  /* remove webkit p margins */
-  -webkit-margin-before: 0em;
-  -webkit-margin-after: 0em;
-}
-.talktextright p{
-  /* remove webkit p margins */
-  -webkit-margin-before: 0em;
-  -webkit-margin-after: 0em;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }

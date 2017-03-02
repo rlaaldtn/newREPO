@@ -8,7 +8,7 @@ body {
     height: 500px;
     width: 300px;
     margin: 0 auto;
-    background-color: #b7e0ef;
+    background-color: #afc9e0;
 }
 
 #scroll-option {
@@ -19,4 +19,66 @@ body {
   width: 300px;
   overflow: auto;
   overflow-x: hidden;
+}
+
+#inputs {
+  height: 100px;
+  width: 300px;
+  background-color: #ffffff;
+}
+
+#inputtextarea {
+  height: 100px;
+  width: 200px;
+  float: left;
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-bottom: 10px;
+  padding-right: 0px;
+}
+
+#input {
+  border: 0;
+  resize: none;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: yes;
+}
+
+#input:focus {
+  outline: none;
+}
+
+#inputbutton {
+  height: 100px;
+  width: 100px;
+  float: right;
+  padding: 15px;
+}
+
+#send {
+  padding: 0;
+  border: 0.1px solid #e2c912;
+  border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+  background-color: #ffe319;
+  color: #6d6017;
+  width: 100%;
+  height: 100%;
+}
+
+#send:active {
+  background-color: #d6c022;
+}
+
+#send:focus {
+  outline: none;
+}
+
+#send:disabled {
+  border-color: #d1d1d1;
+  background-color: #e6e6e6;
+  color: #d1d1d1;
 }

@@ -10,39 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class greetingController {
+public class ApplicationController {
 	
-	protected final Logger logger = LoggerFactory.getLogger(greetingController.class);
+	protected final Logger logger = LoggerFactory.getLogger(ApplicationController.class);
 	
 	@Autowired
 	private CustomerRepository repository;
 
 	Queue<String> queue = new LinkedList<String>();
-	
-    @RequestMapping(value="/greeting")
-    public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
-    }
-    
+
     @MessageMapping("/transfer")
     @SendTo("/chatting/001")
     public Message greeting(@RequestBody Message message) throws Exception {
-    	logger.info(message.getMessage());
         return message;
-    }
-    
-    @RequestMapping(value="/guid", method=RequestMethod.POST)
-    public String getGuid(@RequestBody final String guid) {
-    	return repository.findByCustomerId(guid).getId();
     }
     
     @ResponseBody
